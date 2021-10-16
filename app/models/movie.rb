@@ -14,4 +14,5 @@ class Movie < ActiveRecord::Base
     end
     return self.where({rating: ratings_list})
   end
+
 end
