@@ -8,12 +8,34 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
+    if params[:ratings] == nil
+      params[:ratings] = session[:ratings_to_show]
+    end
     @ratings_to_show = params[:ratings]
-    if @ratings_to_show != nil; @ratings_to_show = @ratings_to_show.keys else @ratings_to_show = [] end
+    
+    session[:ratings_to_show] = @ratings_to_show
+
+    if @ratings_to_show != nil
+      if @ratings_to_show.is_a?(Hash)
+        @ratings_to_show = @ratings_to_show.keys
+      end
+      else @ratings_to_show = [] 
+    end
+    
+
     @movies = Movie.with_ratings(@ratings_to_show)
+    
+    
+    if params[:order] == nil
+      params[:order] = session[:order_type]
+    end
     order_type = params[:order]
-    if order_type != nil; @movies = @movies.order(order_type) end
-      
+    
+    if order_type != nil
+      @movies = @movies.order(order_type) 
+    end
+    
+    session[:order_type] = order_type
   end
 
   def new
@@ -49,6 +71,9 @@ class MoviesController < ApplicationController
   # This helps make clear which methods respond to requests, and which ones do not.
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date, :order)
+  end
+  def movie_sessions
+    session.require(:movie).permit(:order_type, :ratings_to_show)
   end
   
 end
