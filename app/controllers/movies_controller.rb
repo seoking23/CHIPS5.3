@@ -22,7 +22,7 @@ class MoviesController < ApplicationController
       if @ratings_to_show.is_a?(Hash)
         @ratings_to_show = @ratings_to_show.keys
       end
-    else @ratings_to_show = []
+    else @ratings_to_show = @all_ratings
     end
     
 
