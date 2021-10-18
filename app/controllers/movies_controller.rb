@@ -4,6 +4,8 @@ class MoviesController < ApplicationController
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
+    @restful_show_order = session[:order_type]
+    @restful_show_ratings = session[:ratings_to_show]
   end
 
   def index
@@ -14,11 +16,13 @@ class MoviesController < ApplicationController
         params[:order] = session[:order_type]       
       end
     end
+    
     @ratings_to_show = params[:ratings]
     
     session[:ratings_to_show] = @ratings_to_show
-
+    
     if @ratings_to_show != nil
+      
       if @ratings_to_show.is_a?(Hash)
         @ratings_to_show = @ratings_to_show.keys
       end
@@ -48,7 +52,7 @@ class MoviesController < ApplicationController
     end
     
     session[:order_type] = @order_type
-    
+
 
   end
 
