@@ -13,3 +13,6 @@
  *= require_tree .
  *= require_self
  */
+.pr-10 {
+    padding-right: ($spacer * 10) !important;
+}
